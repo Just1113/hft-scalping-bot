@@ -1,1 +1,38 @@
-
+services:
+  - type: web
+    name: hft-scalping-bot
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: singapore  # Choose region closest to Bybit servers
+    plan: free  # Start with free, upgrade for better performance
+    envVars:
+      - key: BYBIT_API_KEY
+        sync: false
+      - key: BYBIT_API_SECRET
+        sync: false
+      - key: BYBIT_TESTNET
+        value: "true"  # Start with testnet!
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: TRADING_SYMBOL
+        value: "BTCUSDT"
+      - key: LEVERAGE
+        value: "5"
+      - key: MAX_POSITION_SIZE
+        value: "0.001"
+      - key: STOP_LOSS_PCT
+        value: "0.3"
+      - key: TAKE_PROFIT_PCT
+        value: "0.2"
+      - key: RENDER
+        value: "true"
+      - key: DATABASE_URL
+        value: "sqlite+aiosqlite:///./data/trades.db"
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: data
+      mountPath: /app/data
+      sizeGB: 1
